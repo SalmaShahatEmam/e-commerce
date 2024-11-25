@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\Http\Middleware\InStock;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
@@ -31,8 +30,8 @@ Route::middleware('auth:sanctum')->group(function () {
     #cart
     Route::controller(CartController::class)->group(function () {
       Route::get('mycart',"MyCart");
-      Route::post('addtocart',"addToCart")->middleware("instock");
-      Route::patch('quantityupdate/{product}','quantityUpdate')->middleware("instock");
+      Route::post('addtocart',"addToCart")->middleware("valide_quantity");
+      Route::post('quantityupdate','quantityUpdate')->middleware("valide_quantity");
       Route::delete('deletefromcart/{product}',"deletefromCart");
     });
     #end cart 
@@ -43,5 +42,6 @@ Route::middleware('auth:sanctum')->group(function () {
       Route::get('myorders','myOrder');
       Route::get('order/details','orderDetails');
     });
+    #end of orders
 });
 

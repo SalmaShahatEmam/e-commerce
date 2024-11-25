@@ -6,5 +6,7 @@ Interface OrderRepositoryInterface
 {
    public function getTotalPrice($products);
    public function createOrder();
+   public function getOrders();
+   public function getOrder($order_id);
 
 }

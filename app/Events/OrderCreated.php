@@ -39,6 +39,8 @@ class OrderCreated implements shouldBroadcast
     {
         return [
             'order_id' => $this->order->id,
+            'user_name' => $this->order->user->name,
+            'total_price' => $this->order->total_price
         ];
     }
 }

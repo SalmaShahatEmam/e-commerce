@@ -22,14 +22,12 @@ class ProductResource extends JsonResource
             "id"=>     $this->id,
             "name"=>   $this->name,   
             "image" => $this->image ? asset("storage/".$this->image) : asset("failed.png"),
+            "price" => $this->price." ".__("currency")
         ];
 
-       if ($this->resource instanceof Product) {
-
-            $data["out_of_stoke"] = !(bool)$this->quantity;
-            $data["price"] = $this->price." ".__("currency");
+       if ($user) {
             $data["product_in_cart"] = $user->cart->contains($this->id);
-            $data["product_quantity_in_cart"] = $user->ProductInCart($this->id);
+            $data["product_quantity_in_cart"] = $user->productQuantityInCart($this->id);
         } 
 
         return $data;

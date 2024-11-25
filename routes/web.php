@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Dashboard\AuthController;
+use App\Http\Controllers\Dashboard\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,5 +19,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 Broadcast::channel('orders', function ($user) {
-    return $user;  // على سبيل المثال، التأكد من أن المستخدم هو المسؤول
+    return $user;  
+});
+
+
+Route::prefix('admin')->group(function () {
+
+    Route::get('login',[AuthController::class , 'showLoginForm'])->name('admin.login');
+    Route::post('login',[AuthController::class , 'login'])->name('admin.login.post');
+
+
+    Route::resource('orders' , OrderController::class)->only(['index','show'])->middleware("auth");
 });

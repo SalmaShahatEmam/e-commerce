@@ -61,9 +61,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Product::class,'carts')->withPivot('quantity');
     }
 
-    public function ProductQuantityInCart($product_id)
+    public function productQuantityInCart($product_id)
     {
-        $product = $this->cart()->where('product_id', $product_id)->first();
+        $product = $this->cart()->find($product_id);
         
         return $product ? $product->pivot->quantity : null; 
     }

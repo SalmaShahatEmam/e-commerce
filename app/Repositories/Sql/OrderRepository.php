@@ -13,6 +13,17 @@ class OrderRepository implements OrderRepositoryInterface {
         
     }
 
+    public function getOrders(){
+
+        return $this->model->with(['user','products'])->get();
+    }
+
+    public function getOrder($id)
+    {
+        return $this->model->with(['user','products'])->where('id',$id)->first();
+
+    }
+
     public function createOrder(){
         $user = auth()->user();
         $products = $user->cart;

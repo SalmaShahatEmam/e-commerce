@@ -1,4 +1,9 @@
 {
-    "sign up successfully":"تم تسجيل الدخول بنجاح",
-    "currency":"LE"
+    "sign up successfully": "تم التسجيل بنجاح",
+    "The provided quantity are unavailable.": "الكمية المقدمة غير متوفرة.",
+    "this product not found in cart": "لم يتم العثور على هذا المنتج في السلة",
+    "product quantity updated successfully": "تم تحديث كمية المنتج بنجاح",
+    "product deleted from cart successfully": "تم حذف المنتج من السلة بنجاح",
+    "happy cart": "سلة التسوق السعيدة",
+    "currency": "جنيه مصري"
 }

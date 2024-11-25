@@ -16,7 +16,7 @@ class CartController extends Controller
 
         $user = auth()->user();
         $products = $user->cart;
-        return $this->response(ProductResource::collection($products), "", 200);
+        return $this->response(ProductResource::collection($products), __("happy cart"), 200);
 
     }
     public function addToCart(Request $request)
@@ -45,15 +45,15 @@ class CartController extends Controller
         return $this->response(null , __("product deleted from cart successfully"),200);
     }
    
-    public function quantityUpdate(Request $request , Product $product)
+    public function quantityUpdate(Request $request)
     {
         $user = auth()->user();
-        
-        if(!$user->cart->contains($product->id)){
+
+        if(!$user->cart->contains($request->product_id)){
 
             return $this->response(null , __("this product not found in cart"),404);
         }
-        $user->cart()->updateExistingPivot($product->id, [
+        $user->cart()->updateExistingPivot($request->product_id, [
             'quantity' => $request->quantity,
         ]);
 
