@@ -1,14 +1,17 @@
 <?php
 namespace App\Repositories\Sql;
 
+use App\Models\User;
 use App\Models\Order;
 use App\Events\OrderCreated;
 use Illuminate\Support\Facades\DB;
+use App\Services\notificationService;
+use App\Notifications\OrderNotification;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
 
 class OrderRepository implements OrderRepositoryInterface {
 
-    public function __construct(protected Order $model)
+    public function __construct(protected Order $model , protected notificationService $notificationService)
     {
 
     }
@@ -26,7 +29,7 @@ class OrderRepository implements OrderRepositoryInterface {
 
     }
 
-    public function createOrder(){
+    /* public function createOrder(){
 
         $user = auth()->user();
 
@@ -55,13 +58,57 @@ class OrderRepository implements OrderRepositoryInterface {
 
 
             }
+            
             event(new OrderCreated($order));
+
+            $admin = User::admin()->first();
+
+            $admin->notify(new OrderNotification($order));
+
 
         });
 
         return true;
 
+    } */
+
+    public function createOrder()
+{
+    $user = auth()->user();
+    $products = $user->cart;
+    $totalPrice = $this->getTotalPrice($products);
+
+    try {
+        $order = DB::transaction(function () use ($user, $products, $totalPrice) {
+            $order = $user->order()->create([
+                'total_price' => $totalPrice,
+            ]);
+
+            foreach ($products as $product) {
+                $quantity = $user->ProductQuantityInCart($product->id);
+
+                $product->decrement('quantity', $quantity);
+
+                $order->products()->attach($product->id, [
+                    'quantity' => $quantity,
+                    'product_price' => $product->price,
+                ]);
+
+                $user->cart()->detach($product->id);
+            }
+
+            return $order;
+        });
+
+        $this->notificationService->sendOrderNotificationsToAdmin($order);
+
+        return $order;
+        
+    } catch (Exception $e) {
+        return false;
     }
+}
+
 
     public function getTotalPrice($products){
 
