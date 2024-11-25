@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Order;
 use App\Models\Product;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -64,12 +66,19 @@ class User extends Authenticatable
     public function productQuantityInCart($product_id)
     {
         $product = $this->cart()->find($product_id);
-        
-        return $product ? $product->pivot->quantity : null; 
+
+        return $product ? $product->pivot->quantity : null;
     }
 
-    public function order(){
+    public function order(): HasMany
+    {
+
         return $this->hasMany(Order::class);
+    }
+
+    public function hasEmptyCart()
+    {
+        return $this->cart->isEmpty();
     }
 
 }

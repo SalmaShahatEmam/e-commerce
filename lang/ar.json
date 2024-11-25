@@ -5,5 +5,10 @@
     "product quantity updated successfully": "تم تحديث كمية المنتج بنجاح",
     "product deleted from cart successfully": "تم حذف المنتج من السلة بنجاح",
     "happy cart": "سلة التسوق السعيدة",
-    "currency": "جنيه مصري"
+    "logged out successfully":"تم تسجيل الخروج بنجاح",
+    "product added to cart successfully":"تم أضافه المنتج الى السله ",
+    "this product already in cart" : "المنتج موجود فى السله بالفعل",
+    "currency": "جنيه مصري",
+    "your cart is empty":"سلة التسوق فارغة",
+    "Order not found" : " هذا الطلب غير موجود"
 }

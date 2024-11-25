@@ -18,10 +18,16 @@ use App\Http\Controllers\Api\ProductController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('signup',[AuthController::class , 'SignUp']);
-Route::post('signin',[AuthController::class , 'SignIn']);
+
+Route::controller(AuthController::class)->group(function () {
+    Route::post('signup', 'SignUp');
+    Route::post('signin', 'SignIn');
+});
+
 
 Route::apiResource('products',ProductController::class)->only(['index','show']);
+
+
 Route::middleware('auth:sanctum')->group(function () {
     #auth
     Route::get('logout',[AuthController::class , 'LogOut']);
@@ -31,16 +37,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(CartController::class)->group(function () {
       Route::get('mycart',"MyCart");
       Route::post('addtocart',"addToCart")->middleware("valide_quantity");
-      Route::post('quantityupdate','quantityUpdate')->middleware("valide_quantity");
+      //Route::post('quantityupdate/','quantityUpdate')->middleware("valide_quantity");
+      Route::patch('quantityupdate/{product}','quantityUpdate');
       Route::delete('deletefromcart/{product}',"deletefromCart");
     });
-    #end cart 
+    #end cart
 
     #orders
-    Route::controller(OrderController::class)->group(function(){
-      Route::get('create/order','createOrder');
-      Route::get('myorders','myOrder');
-      Route::get('order/details','orderDetails');
+    Route::prefix('orders')->controller(OrderController::class)->group(function(){
+      Route::get('create','store');
+      Route::get('myorders','index');
+      Route::get("show/{order}",'show');
     });
     #end of orders
 });

@@ -10,7 +10,7 @@ class OrderRepository implements OrderRepositoryInterface {
 
     public function __construct(protected Order $model)
     {
-        
+
     }
 
     public function getOrders(){
@@ -20,14 +20,20 @@ class OrderRepository implements OrderRepositoryInterface {
 
     public function getOrder($id)
     {
-        return $this->model->with(['user','products'])->where('id',$id)->first();
+        $order =  $this->model->with(['user','products'])->where('id',$id)->first();
+
+        return $order ?? null;
 
     }
 
     public function createOrder(){
+
         $user = auth()->user();
+
         $products = $user->cart;
+
         $total_price = $this->getTotalPrice($products);
+
         $order = null;
 
         DB::transaction(function () use ($total_price , $user , $products ,$order){
@@ -37,19 +43,22 @@ class OrderRepository implements OrderRepositoryInterface {
             ]);
 
             foreach($products as $product){
+
                 $product->decrement('quantity', $user->ProductQuantityInCart($product->id));
+
                 $order->products()->attach($product->id ,[
                     'quantity' => $user->ProductQuantityInCart($product->id),
                     'product_price' => $product->price
                 ]);
+
                 $products = $user->cart()->detach($product->id);
 
-                
+
             }
             event(new OrderCreated($order));
 
         });
-      
+
         return true;
 
     }
@@ -65,6 +74,23 @@ class OrderRepository implements OrderRepositoryInterface {
         }
 
         return $total_price;
+    }
+
+    public function getAllOrders(){
+
+        $user = auth()->user();
+
+        $orders = $user->order;
+
+        return $orders->isEmpty() ? null : $orders;
+    }
+
+    public function orderDetails($order)
+    {
+        $products =  $order->products;
+
+        return $products->isEmpty() ? null : $products;
+
     }
 
 }

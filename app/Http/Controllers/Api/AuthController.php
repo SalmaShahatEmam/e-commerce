@@ -15,7 +15,7 @@ class AuthController extends Controller
 
     public function __construct(protected UserRepositoryInterface $userRepo)
     {
-       
+
     }
 
     public function SignUp(SignUpRequest $request)
@@ -49,13 +49,13 @@ class AuthController extends Controller
                 'user' => new UserResource($user),
                 'token' => $token
             ],
-            "sign up successfully",
+            __("sign up successfully"),
             200
         );
     }
 
     public function logout(){
-     
+
         $user = $this->userRepo->logout();
         return $this->response(null , __("logged out successfully") , 200);
     }
