@@ -23,6 +23,8 @@ class UserSeeder extends Seeder
             'password'=>'password'
         ];
 
-        User::create($admin);
+        $user = User::create($admin);
+
+        $user->assignRole('admin');
     }
 }

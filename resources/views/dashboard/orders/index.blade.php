@@ -40,7 +40,6 @@
                                             <th>product number</th>
                                             <th>total price</th>
 
-                                            <th>view</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -56,12 +55,7 @@
 
                                          
 
-                                                <td class="text-center">
-                                                    <div class="btn-group" role="group" aria-label="Second group">
-                                                        <a href="{{ route('orders.show', $order->id) }}"
-                                                            class="btn btn-sm btn-primary">{{__('تفاصيل الطلب')}}</a>
-                                                    </div>
-                                                </td>
+                                                
                                             </tr>
                                         @endforeach
                                     </tbody>

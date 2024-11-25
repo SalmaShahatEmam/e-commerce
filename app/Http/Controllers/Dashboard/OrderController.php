@@ -20,12 +20,12 @@ class OrderController extends Controller
     }
 
     
-    public function show($id)
+   /*  public function show($id)
     {
         $order = $this->orderRepo->getOrder($id);
 
         return view('dashboard.orders.show' ,compact('order'));
-    }
+    } */
 
 
 }

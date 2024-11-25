@@ -24,6 +24,8 @@ class AuthController extends Controller
 
         $user = $this->userRepo->register($data);
 
+        $user->assignRole('user');
+
         $token = $user->generateToken($request->device_id);
 
         return $this->response(
@@ -57,6 +59,7 @@ class AuthController extends Controller
     public function logout(){
 
         $user = $this->userRepo->logout();
+        
         return $this->response(null , __("logged out successfully") , 200);
     }
 }

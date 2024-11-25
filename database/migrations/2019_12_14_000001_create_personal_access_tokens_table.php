@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('token', 64)->unique();
             $table->text('abilities')->nullable();
             $table->timestamp('last_used_at')->nullable();
-            $table->implement('expires_at')->default(one year from now);
+            //$table->implement('expires_at')->default(one year from now);
             $table->timestamps();
         });
     }

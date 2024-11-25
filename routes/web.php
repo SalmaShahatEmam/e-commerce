@@ -16,10 +16,10 @@ use App\Http\Controllers\Dashboard\OrderController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('admin.login');
 });
 Broadcast::channel('orders', function ($user) {
-    return $user;  
+    return  $user->hasRole('admin');; 
 });
 
 
@@ -29,5 +29,5 @@ Route::prefix('admin')->group(function () {
     Route::post('login',[AuthController::class , 'login'])->name('admin.login.post');
 
 
-    Route::resource('orders' , OrderController::class)->only(['index','show'])->middleware("auth");
+    Route::resource('orders' , OrderController::class)->only(['index'])->middleware("auth");
 });
